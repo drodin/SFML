@@ -10,8 +10,7 @@ if(HUNTER_ENABLED)
     FetchContent_MakeAvailable(SetupHunter)
 
     set(SFML_USE_SYSTEM_DEPS TRUE)
-    set(SFML_MISC_INSTALL_PREFIX ".")
-    set(SFML_DEPENDENCIES_INSTALL_PREFIX ".")
+    set(SFML_MISC_INSTALL_PREFIX "share/SFML")
 endif()
 
 # CMake's built-in Android support requires 3.7.0
@@ -421,8 +420,10 @@ else()
             COMPONENT devel)
 endif()
 
+if(NOT HUNTER_ENABLED)
 install(FILES license.md DESTINATION ${SFML_MISC_INSTALL_PREFIX})
 install(FILES readme.md DESTINATION ${SFML_MISC_INSTALL_PREFIX})
+endif()
 
 # install 3rd-party libraries and tools
 if(SFML_OS_WINDOWS)
@@ -527,8 +528,10 @@ elseif(SFML_OS_ANDROID)
         install(FILES extlibs/Android.mk DESTINATION extlibs)
     endif()
 
+  if(NOT HUNTER_ENABLED)
     # install Android.mk so the NDK knows how to set up SFML
     install(FILES src/SFML/Android.mk DESTINATION .)
+  endif()
 
 endif()
 
