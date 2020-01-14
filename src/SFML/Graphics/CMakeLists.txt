@@ -130,12 +130,21 @@ else()
     endif()
 endif()
 
+if(HUNTER_ENABLED)
+if(SFML_OS_ANDROID)
+    target_link_libraries(sfml-graphics PRIVATE EGL GLESv1_CM)
+endif()
+
+find_package(freetype CONFIG REQUIRED)
+target_link_libraries(sfml-graphics PRIVATE freetype::freetype)
+else()
 if(SFML_OS_ANDROID)
     target_link_libraries(sfml-graphics PRIVATE z EGL GLESv1_CM)
 endif()
 
 sfml_find_package(Freetype INCLUDE "FREETYPE_INCLUDE_DIRS" LINK "FREETYPE_LIBRARY")
 target_link_libraries(sfml-graphics PRIVATE Freetype)
+endif(HUNTER_ENABLED)
 
 # add preprocessor symbols
 target_compile_definitions(sfml-graphics PRIVATE "STBI_FAILURE_USERMSG")

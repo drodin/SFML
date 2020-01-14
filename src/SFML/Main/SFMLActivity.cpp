@@ -176,7 +176,33 @@ void ANativeActivity_onCreate(ANativeActivity* activity, void* savedState, size_
 #undef _SFML_S
 #undef _SFML_QS
 #endif
+#ifndef HUNTER_ENABLED
     loadLibrary("openal", lJNIEnv, ObjectActivityInfo);
+#else
+#if !defined(SFML_DEBUG)
+    loadLibrary("z", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("bz2", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("png", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("freetype", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("openal", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("ogg", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("vorbis", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("vorbisenc", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("vorbisfile", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("FLAC", lJNIEnv, ObjectActivityInfo);
+#else
+    loadLibrary("zd", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("bz2d", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("pngd", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("freetyped", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("openald", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("oggd", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("vorbisd", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("vorbisencd", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("vorbisfiled", lJNIEnv, ObjectActivityInfo);
+    loadLibrary("FLACd", lJNIEnv, ObjectActivityInfo);
+#endif
+#endif
 
 #if !defined(SFML_DEBUG)
     loadLibrary("sfml-system", lJNIEnv, ObjectActivityInfo);

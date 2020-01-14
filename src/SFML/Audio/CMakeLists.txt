@@ -55,6 +55,32 @@ set(CODECS_SRC
 )
 source_group("codecs" FILES ${CODECS_SRC})
 
+if(HUNTER_ENABLED)
+    find_package(OpenAL CONFIG REQUIRED)
+    find_package(vorbis CONFIG REQUIRED)
+    find_package(FLAC CONFIG REQUIRED)
+
+    sfml_add_library(sfml-audio
+                    SOURCES ${SRC} ${CODECS_SRC})
+
+    target_link_libraries(sfml-audio PRIVATE OpenAL::OpenAL)
+
+    if(SFML_OS_ANDROID)
+        target_link_libraries(sfml-audio PRIVATE android OpenSLES)
+    endif()
+
+    target_link_libraries(sfml-audio
+                        PUBLIC sfml-system
+                        PRIVATE vorbis::vorbis FLAC::FLAC)
+
+    if (NOT SFML_OS_IOS)
+        target_link_libraries(sfml-audio
+                            PRIVATE vorbis::vorbisfile vorbis::vorbisenc)
+    endif()
+
+    return()
+endif()
+
 # let CMake know about our additional audio libraries paths (on Windows and OSX)
 if(SFML_OS_WINDOWS)
     set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/extlibs/headers/AL")

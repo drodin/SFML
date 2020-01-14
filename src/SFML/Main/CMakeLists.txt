@@ -27,5 +27,10 @@ set_target_properties(sfml-main PROPERTIES
 # from depending on shared libraries), we need a boostrap activity which
 # will load our shared libraries manually
 if(SFML_OS_ANDROID)
+  if(BUILD_SHARED_LIBS)
     sfml_add_library(sfml-activity SOURCES ${SRCROOT}/SFMLActivity.cpp)
+    if(HUNTER_ENABLED)
+        target_compile_definitions(sfml-activity PRIVATE "HUNTER_ENABLED")
+    endif()
+  endif()
 endif()

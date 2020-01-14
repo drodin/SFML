@@ -1,3 +1,19 @@
+option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
+
+if(HUNTER_ENABLED)
+    cmake_minimum_required(VERSION 3.14)
+
+    set(HUNTER_PACKAGES freetype OpenAL vorbis FLAC)
+
+    include(FetchContent)
+    FetchContent_Declare(SetupHunter GIT_REPOSITORY https://github.com/cpp-pm/gate)
+    FetchContent_MakeAvailable(SetupHunter)
+
+    set(SFML_USE_SYSTEM_DEPS TRUE)
+    set(SFML_MISC_INSTALL_PREFIX ".")
+    set(SFML_DEPENDENCIES_INSTALL_PREFIX ".")
+endif()
+
 # CMake's built-in Android support requires 3.7.0
 if(CMAKE_SYSTEM_NAME MATCHES "Android")
     cmake_minimum_required(VERSION 3.7.2)
@@ -52,6 +68,7 @@ set(VERSION_MAJOR 2)
 set(VERSION_MINOR 5)
 set(VERSION_PATCH 1)
 
+if(NOT HUNTER_ENABLED)
 # add an option for choosing the build type (shared or static)
 if(NOT (SFML_OS_IOS OR SFML_OS_ANDROID))
     sfml_set_option(BUILD_SHARED_LIBS TRUE BOOL "TRUE to build SFML as shared libraries, FALSE to build it as static libraries")
@@ -62,6 +79,7 @@ else()
         set(BUILD_SHARED_LIBS TRUE)
     endif()
 endif()
+endif(NOT HUNTER_ENABLED)
 
 # add an option for building the examples
 if(NOT SFML_OS_ANDROID)
@@ -111,11 +129,13 @@ if(SFML_OS_ANDROID)
         message(WARNING "CMake might not properly support setting the STL. Make sure to adjust all generated library projects!")
     endif()
 
+  if(NOT HUNTER_ENABLED)
     # install everything in $NDK/sources/ because this path is appended by the NDK (convenient)
     set(CMAKE_INSTALL_PREFIX ${CMAKE_ANDROID_NDK}/sources/third_party/sfml)
 
     # we install libs in a subdirectory named after the ABI (lib/mips/*.so)
     set(LIB_SUFFIX "/${CMAKE_ANDROID_ARCH_ABI}")
+  endif()
 
     # pass shared STL configuration (if any)
     if (CMAKE_ANDROID_STL_TYPE MATCHES "_shared")
