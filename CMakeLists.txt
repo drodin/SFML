@@ -223,6 +223,9 @@ if(SFML_COMPILER_MSVC)
     endif()
 
     add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
+
+    # fix vs-15-2017 build (no auto_ptr)
+    add_definitions(-D_HAS_AUTO_PTR_ETC)
 endif()
 
 # define SFML_OPENGL_ES if needed
