@@ -71,12 +71,7 @@ if(HUNTER_ENABLED)
 
     target_link_libraries(sfml-audio
                         PUBLIC sfml-system
-                        PRIVATE vorbis::vorbis FLAC::FLAC)
-
-    if (NOT SFML_OS_IOS)
-        target_link_libraries(sfml-audio
-                            PRIVATE vorbis::vorbisfile vorbis::vorbisenc)
-    endif()
+                        PRIVATE vorbis::vorbis vorbis::vorbisfile vorbis::vorbisenc FLAC::FLAC)
 
     return()
 endif()

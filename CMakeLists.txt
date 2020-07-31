@@ -42,6 +42,7 @@ if (NOT CMAKE_VERSION VERSION_LESS 3.9)
     cmake_policy(SET CMP0068 NEW)
 endif()
 
+if(NOT HUNTER_ENABLED)
 # add some default value for some additional macOS variable
 # note that those variables are ignored on other systems
 if(NOT CMAKE_OSX_ARCHITECTURES)
@@ -54,6 +55,7 @@ if(NOT CMAKE_OSX_SYSROOT)
                     COMMAND tr -d '\n'
                     OUTPUT_VARIABLE CMAKE_OSX_SYSROOT
                     ERROR_QUIET)
+endif()
 endif()
 
 # project name
@@ -274,9 +276,11 @@ if(SFML_OS_MACOSX)
         endif()
     endif()
 
+    if(NOT HUNTER_ENABLED)
     # only the default architecture (i.e. 64-bit) is supported
     if(NOT CMAKE_OSX_ARCHITECTURES STREQUAL "x86_64")
         message(FATAL_ERROR "Only 64-bit architecture is supported")
+    endif()
     endif()
 
     # configure Xcode templates
