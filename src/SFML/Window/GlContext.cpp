@@ -61,6 +61,23 @@
 
     #endif
 
+    #if defined(SFML_SYSTEM_ANDROID) || defined(SFML_SYSTEM_IOS)
+    extern "C" {
+        void initialize_gl4es();
+    }
+    #endif
+
+    #if defined(SFML_SYSTEM_IOS)
+
+        #include <SFML/Window/iOS/EaglContext.hpp>
+        typedef sf::priv::EaglContext ContextType;
+
+    #elif defined(SFML_SYSTEM_ANDROID)
+
+        #include <SFML/Window/EglContext.hpp>
+        typedef sf::priv::EglContext ContextType;
+
+    #endif
 #else
 
     #if defined(SFML_SYSTEM_IOS)
@@ -477,7 +494,7 @@ bool GlContext::isExtensionAvailable(const char* name)
 ////////////////////////////////////////////////////////////
 GlFunctionPointer GlContext::getFunction(const char* name)
 {
-#if !defined(SFML_OPENGL_ES)
+#if !defined(SFML_OPENGL_ES) && !defined(SFML_SYSTEM_ANDROID) && !defined(SFML_SYSTEM_IOS)
 
     Lock lock(mutex);
 
@@ -635,6 +652,10 @@ void GlContext::initialize(const ContextSettings& requestedSettings)
 {
     // Activate the context
     setActive(true);
+
+#if !defined(SFML_OPENGL_ES) && (defined(SFML_SYSTEM_ANDROID) || defined(SFML_SYSTEM_IOS))
+        initialize_gl4es();
+#endif
 
     // Retrieve the context version number
     int majorVersion = 0;

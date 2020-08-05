@@ -202,7 +202,7 @@ bool VertexBuffer::update(const Vertex* vertices, std::size_t vertexCount, unsig
 ////////////////////////////////////////////////////////////
 bool VertexBuffer::update(const VertexBuffer& vertexBuffer)
 {
-#ifdef SFML_OPENGL_ES
+#if defined(SFML_OPENGL_ES) || defined(SFML_SYSTEM_ANDROID) || defined(SFML_SYSTEM_IOS)
 
     return false;
 

@@ -452,7 +452,7 @@ void Texture::update(const Texture& texture, unsigned int x, unsigned int y)
     if (!m_texture || !texture.m_texture)
         return;
 
-#ifndef SFML_OPENGL_ES
+#if !defined(SFML_OPENGL_ES) && !defined(SFML_SYSTEM_ANDROID) && !defined(SFML_SYSTEM_IOS)
 
     {
         TransientContextLock lock;

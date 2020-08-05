@@ -34,6 +34,9 @@
 #include <utility>
 #include <set>
 
+#if defined(SFML_SYSTEM_ANDROID) || defined(SFML_SYSTEM_IOS)
+#define SFML_OPENGL_ES
+#endif
 
 namespace
 {

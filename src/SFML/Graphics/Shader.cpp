@@ -40,7 +40,7 @@
 #include <vector>
 
 
-#ifndef SFML_OPENGL_ES
+#if !defined(SFML_OPENGL_ES) && !defined(SFML_SYSTEM_ANDROID) && !defined(SFML_SYSTEM_IOS)
 
 #if defined(SFML_SYSTEM_MACOS) || defined(SFML_SYSTEM_IOS)
 

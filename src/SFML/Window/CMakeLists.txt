@@ -46,7 +46,7 @@ set(SRC
     ${SRCROOT}/WindowImpl.hpp
     ${INCROOT}/WindowStyle.hpp
 )
-if(SFML_OPENGL_ES AND NOT SFML_OS_IOS)
+if((SFML_OPENGL_ES AND NOT SFML_OS_IOS) OR (NOT SFML_OPENGL_ES AND SFML_OS_ANDROID))
     list(APPEND SRC ${SRCROOT}/EGLCheck.cpp)
     list(APPEND SRC ${SRCROOT}/EGLCheck.hpp)
     list(APPEND SRC ${SRCROOT}/EglContext.cpp)
@@ -248,6 +248,14 @@ if ((NOT ${CMAKE_VERSION} VERSION_LESS 3.11) AND (NOT OpenGL_GL_PREFERENCE))
 endif()
 
 if(SFML_OPENGL_ES)
+    if(SFML_OS_IOS)
+        target_link_libraries(sfml-window PRIVATE "-framework OpenGLES")
+    elseif(SFML_OS_ANDROID)
+        target_link_libraries(sfml-window PRIVATE EGL GLESv1_CM)
+    endif()
+elseif(SFML_OS_ANDROID OR SFML_OS_IOS)
+    find_package(gl4es CONFIG REQUIRED)
+    target_link_libraries(sfml-window PRIVATE gl4es::GL)
     if(SFML_OS_IOS)
         target_link_libraries(sfml-window PRIVATE "-framework OpenGLES")
     elseif(SFML_OS_ANDROID)
