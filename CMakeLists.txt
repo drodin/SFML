@@ -1,13 +1,13 @@
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 
 if(HUNTER_ENABLED)
-    cmake_minimum_required(VERSION 3.14)
+    cmake_minimum_required(VERSION 3.9.2)
 
-    set(HUNTER_PACKAGES freetype OpenAL vorbis FLAC)
-
-    include(FetchContent)
-    FetchContent_Declare(SetupHunter GIT_REPOSITORY https://github.com/cpp-pm/gate)
-    FetchContent_MakeAvailable(SetupHunter)
+    include(cmake/HunterGate.cmake)
+    HunterGate(
+        URL "https://github.com/cpp-pm/hunter/archive/v0.23.263.tar.gz"
+        SHA1 "9b96c376bf3526163e81b7adb8db5a0ea8c7e1bf"
+    )
 
     set(SFML_USE_SYSTEM_DEPS TRUE)
     set(SFML_MISC_INSTALL_PREFIX "share/SFML")
@@ -60,6 +60,16 @@ endif()
 
 # project name
 project(SFML)
+
+if(HUNTER_ENABLED)
+    hunter_add_package(freetype)
+    hunter_add_package(OpenAL)
+    hunter_add_package(vorbis)
+    hunter_add_package(FLAC)
+    if((ANDROID OR IOS) AND DEFINED SFML_OPENGL_ES AND NOT SFML_OPENGL_ES)
+        hunter_add_package(gl4es)
+    endif()
+endif()
 
 # include the configuration file
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake)
