@@ -46,4 +46,10 @@
     return self.orientationCanChange;
 }
 
+////////////////////////////////////////////////////////////
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures
+{
+    return UIRectEdgeBottom;
+}
+
 @end
